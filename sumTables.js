@@ -1,23 +1,28 @@
 const { chromium } = require('playwright');
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
 
   let totalSum = 0;
 
   for (let seed = 35; seed <= 44; seed++) {
     const url = `https://exam.iitm.ac.in/seed/${seed}`;
-    await page.goto(url);
+    console.log("Visiting:", url);
+
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
     const numbers = await page.$$eval('table td', cells =>
       cells
-        .map(td => td.innerText.trim())
-        .filter(text => /^-?\d+(\.\d+)?$/.test(text))
+        .map(td => td.textContent.trim())
+        .filter(t => /^-?\d+$/.test(t))
         .map(Number)
     );
 
-    totalSum += numbers.reduce((a, b) => a + b, 0);
+    const pageSum = numbers.reduce((a, b) => a + b, 0);
+    console.log(`Seed ${seed} sum:`, pageSum);
+
+    totalSum += pageSum;
   }
 
   console.log("FINAL_SUM:", totalSum);
