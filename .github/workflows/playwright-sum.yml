@@ -16,12 +16,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install Playwright dependencies
         run: |
           npm init -y
           npm install playwright
+          npx playwright install --with-deps
 
       - name: Run Playwright script - 23f3004404@ds.study.iitm.ac.in
-        run: |
-          npx playwright install
-          node sumTables.js
+        run: node sumTables.js
