@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
   let totalSum = 0;
 
   for (let seed = 35; seed <= 44; seed++) {
-    const url = `https://exam.iitm.ac.in/seed/${seed}`;
+    const url = `https://raw.githubusercontent.com/iitm-ds/exam-data/main/seed-${seed}.html`;
     console.log("Visiting:", url);
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
